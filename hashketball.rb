@@ -1,4 +1,6 @@
 # Write your code below game_hash
+require 'pry'
+
 def game_hash
   {
     home: {
@@ -127,3 +129,69 @@ def game_hash
 end
 
 # Write code here
+def num_points_scored(player_name)
+  # need a helper method that will return a player's stats
+  player = player_stats(player_name)
+  player[:points]
+end
+
+def player_stats(player_name)
+  # this method returns a specific player's stats
+  # need a helper method that will return all players's stats
+  all_players.find do |player|
+    player[:player_name] == player_name
+  end
+end
+
+def all_players
+  # this method returns all players's stats
+  game_hash[:home][:players] + game_hash[:away][:players]
+end
+
+def shoe_size(player_name)
+  player = player_stats(player_name)
+  player[:shoe]
+end
+
+def team_colors(team_name)
+  # need a helper method that will find the team in question
+  team = find_team(team_name)
+  team[:colors]
+end
+
+def find_team(team_name)  
+  team_info = game_hash.find do |location, team_data| # iterate over each location key in game_hash
+    # and returns a key-value pair that satisfies the predicate function defined in the body of .find method
+    team_data[:team_name] == team_name
+  end
+  # team_info returns an array that consists of a key on index 0, and its value on index 1.
+  # in this case, the key would be either :home or :away
+  # and the value would be the hash that :home or :away points to
+  team_info[1]
+end
+
+def team_names
+  game_hash.map do |location, team_data|
+    team_data[:team_name]
+  end
+end
+
+def player_numbers(team_name)
+  team = find_team(team_name)
+  team[:players].map do |player|
+    player[:number]
+  end
+end
+
+def big_shoe_rebounds
+  # need a helper method to find the player with the biggest shoe
+  big_shoe_player[:rebounds]
+end
+
+def big_shoe_player
+  # check out more methods on enumerables at
+  # https://ruby-doc.org/core-3.0.1/Enumerable.html#method-i-max_by
+  all_players.max_by do |player|
+    player[:shoe]
+  end
+end
